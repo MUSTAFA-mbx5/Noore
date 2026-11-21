@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>لعبة الثروة الوطنية 💸🛢️</title>
+    <title>نوري المالكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -36,7 +36,6 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* أرضية اللعبة */
         .ground {
             position: absolute;
             bottom: 0;
@@ -48,39 +47,41 @@
             box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
         }
 
-        /* الشخصية */
+        /* الشخصية - صورة كاملة بدل الدائرة */
         #player {
-            width: 90px;
-            height: 90px;
-            background-image: url('maliki.jpg');
-            background-size: cover;
-            background-position: center;
+            width: 100px;
+            height: 130px;
+            background-image: url('character.png');
+            background-size: contain;
+            background-position: center bottom;
+            background-repeat: no-repeat;
             position: absolute;
             bottom: 40px;
-            left: calc(50% - 45px);
-            border-radius: 50%;
-            border: 4px solid #fff;
+            left: calc(50% - 50px);
             z-index: 10;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.7));
             animation: bounce 0.6s infinite alternate ease-in-out;
+            /* لم نعد نستخدم border-radius لأنها صورة PNG شفافة */
         }
 
-        /* تأثير النط والاهتزاز للشخصية */
         @keyframes bounce {
             from { transform: translateY(0) scale(1); }
             to { transform: translateY(-10px) scale(1.02); }
         }
 
-        /* الأغراض اللي تطيح */
+        /* الأغراض المتساقطة (صور) */
         .falling-item {
             position: absolute;
-            font-size: 45px;
+            width: 55px;
+            height: 55px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             top: -60px;
             z-index: 5;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6));
         }
 
-        /* لوحة النقاط */
         #ui-layer {
             position: absolute;
             top: 15px;
@@ -109,7 +110,6 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
 
-        /* نصوص طائرة (مثل +10) */
         .floating-text {
             position: absolute;
             color: #2ecc71;
@@ -126,7 +126,6 @@
             100% { transform: translateY(-80px); opacity: 0; }
         }
 
-        /* شاشات البداية والنهاية */
         .screen {
             position: absolute;
             top: 0;
@@ -181,7 +180,6 @@
             display: none !important;
         }
 
-        /* تعليمات الجوال */
         .controls-hint {
             position: absolute;
             bottom: 15px;
@@ -196,7 +194,6 @@
 </head>
 <body>
 
-    <!-- الأغنية -->
     <audio id="bg-music" loop>
         <source src="dOZNqq7b2h4.m4a" type="audio/mp4">
     </audio>
@@ -213,23 +210,26 @@
 
         <div class="controls-hint">حرك بإصبعك أو بالأسهم ⬅️➡️</div>
 
-        <!-- شاشة البداية -->
         <div id="start-screen" class="screen">
-            <h1>الثروة الوطنية 💸🛢️</h1>
-            <p>ساعد الوزير بجمع الدولارات والنفط!<br>احذر من القنابل 💣!</p>
-            <button onclick="startGame()">ابدأ اللعبة</button>
+            <h1>بوك الثروة الوطنية  💸🛢️</h1>
+            <p>ساعد الشخصية بجمع الفلوس والنفط!<br>احذر من حنان فتلاوي 💣!</p>
+            <button onclick="startGame()">ابدأ شغلها</button>
         </div>
 
-        <!-- شاشة النهاية -->
         <div id="game-over-screen" class="screen hidden">
-            <h1>خلصت الثروة! 😂</h1>
+            <h1>خلصت مو خوش حرامي! 😂</h1>
             <p>النقاط النهائية: <span id="final-score" style="color:#f1c40f; font-size: 30px;">0</span></p>
             <button onclick="restartGame()">العب مرة ثانية</button>
         </div>
     </div>
 
     <script>
-        // --- المتغيرات الأساسية ---
+        // --- الإعدادات ---
+        const PLAYER_WIDTH = 100;
+        const PLAYER_HEIGHT = 130;
+        const ITEM_WIDTH = 55;
+        const ITEM_HEIGHT = 55;
+
         const player = document.getElementById('player');
         const gameContainer = document.getElementById('game-container');
         const scoreBoard = document.getElementById('score-board');
@@ -239,46 +239,43 @@
         const finalScoreEl = document.getElementById('final-score');
         const music = document.getElementById('bg-music');
 
-        let playerX = gameContainer.clientWidth / 2 - 45;
+        let playerX = 0;
         let score = 0;
         let lives = 3;
         let isGameRunning = false;
         let spawnInterval;
         let gameSpeed = 6;
         let animationId;
-
-        // مصفوفة الأغراض المتساقطة
         let items = [];
 
-        // الأنواع: دولار، نفط، قنبلة
+        // --- أنواع الأغراض (صورك) ---
         const itemTypes = [
-            { emoji: '💵', points: 10, type: 'money' },
-            { emoji: '🛢️', points: 20, type: 'oil' },
-            { emoji: '💣', points: -1, type: 'bomb' }
+            { image: 'money.png', points: 10, type: 'money' },
+            { image: 'oil.png',   points: 20, type: 'oil' },
+            { image: 'bomb.png',  points: -1, type: 'bomb' }
         ];
 
-        // --- التحكم بالشخصية ---
-        // 1. الكيبورد
+        // --- التحكم ---
         document.addEventListener('keydown', (e) => {
             if (!isGameRunning) return;
             if (e.key === 'ArrowLeft' || e.key === 'a') movePlayer(-30);
             if (e.key === 'ArrowRight' || e.key === 'd') movePlayer(30);
         });
 
-        // 2. اللمس أو الماوس (للجوال)
         gameContainer.addEventListener('touchmove', (e) => {
             if (!isGameRunning) return;
+            e.preventDefault();
             const rect = gameContainer.getBoundingClientRect();
             const touchX = e.touches[0].clientX - rect.left;
-            playerX = touchX - 45; // 45 هو نصف عرض الشخصية
+            playerX = touchX - PLAYER_WIDTH / 2;
             constrainPlayer();
             player.style.left = playerX + 'px';
-        });
+        }, { passive: false });
 
         gameContainer.addEventListener('mousemove', (e) => {
-            if (!isGameRunning || e.buttons !== 1) return; // فقط إذا كان الزر مضغوط
+            if (!isGameRunning || e.buttons !== 1) return;
             const rect = gameContainer.getBoundingClientRect();
-            playerX = e.clientX - rect.left - 45;
+            playerX = e.clientX - rect.left - PLAYER_WIDTH / 2;
             constrainPlayer();
             player.style.left = playerX + 'px';
         });
@@ -290,20 +287,19 @@
         }
 
         function constrainPlayer() {
-            const maxRight = gameContainer.clientWidth - 90;
+            const maxRight = gameContainer.clientWidth - PLAYER_WIDTH;
             if (playerX < 0) playerX = 0;
             if (playerX > maxRight) playerX = maxRight;
         }
 
-        // --- إدارة اللعبة ---
+        // --- بدء اللعبة ---
         function startGame() {
             startScreen.classList.add('hidden');
             gameOverScreen.classList.add('hidden');
             
-            // تصفير الإحصائيات
             score = 0;
             lives = 3;
-            playerX = gameContainer.clientWidth / 2 - 45;
+            playerX = gameContainer.clientWidth / 2 - PLAYER_WIDTH / 2;
             player.style.left = playerX + 'px';
             scoreBoard.innerText = '💰 0';
             livesBoard.innerText = '❤️❤️❤️';
@@ -313,11 +309,9 @@
             
             isGameRunning = true;
 
-            // تشغيل الصوت
             music.volume = 0.5;
-            music.play().catch(e => console.log("Audio play blocked"));
+            music.play().catch(e => console.log("Audio blocked"));
 
-            // بدء اللعبة
             spawnInterval = setInterval(spawnItem, 800);
             gameLoop();
         }
@@ -326,7 +320,7 @@
             startGame();
         }
 
-        // --- إنشاء الأغراض ---
+        // --- إنشاء الأغراض (بالصور) ---
         function spawnItem() {
             if (!isGameRunning) return;
 
@@ -334,10 +328,9 @@
             
             const itemEl = document.createElement('div');
             itemEl.classList.add('falling-item');
-            itemEl.innerText = randomType.emoji;
+            itemEl.style.backgroundImage = `url('${randomType.image}')`;
             
-            // موقع عشوائي
-            const randomX = Math.floor(Math.random() * (gameContainer.clientWidth - 50));
+            const randomX = Math.floor(Math.random() * (gameContainer.clientWidth - ITEM_WIDTH));
             itemEl.style.left = randomX + 'px';
             
             gameContainer.appendChild(itemEl);
@@ -346,17 +339,19 @@
                 element: itemEl,
                 x: randomX,
                 y: -60,
-                speed: gameSpeed + Math.random() * 3, // سرعة عشوائية
+                speed: gameSpeed + Math.random() * 3,
                 type: randomType
             });
         }
 
-        // --- حلقة اللعب (Game Loop) ---
+        // --- حلقة اللعب ---
         function gameLoop() {
             if (!isGameRunning) return;
 
             const playerRect = player.getBoundingClientRect();
             const containerRect = gameContainer.getBoundingClientRect();
+            const playerTop = playerRect.top - containerRect.top;
+            const playerBottom = playerRect.bottom - containerRect.top;
 
             for (let i = items.length - 1; i >= 0; i--) {
                 let item = items[i];
@@ -364,22 +359,17 @@
                 item.element.style.top = item.y + 'px';
 
                 // فحص الاصطدام
-                const itemRect = item.element.getBoundingClientRect();
-                
-                // إذا كان الغرض في مستوى الشخصية
-                if (item.y > playerRect.top - containerRect.top - 40 && item.y < playerRect.bottom - containerRect.top) {
-                    // فحص التقاطع الأفقي
-                    if (item.x + 40 > playerX && item.x < playerX + 90) {
+                if (item.y + ITEM_HEIGHT > playerTop && item.y < playerBottom) {
+                    if (item.x + ITEM_WIDTH > playerX && item.x < playerX + PLAYER_WIDTH) {
                         handleCatch(item);
-                        items.splice(i, 1); // إزالة الغرض
+                        items.splice(i, 1);
                         continue;
                     }
                 }
 
-                // إذا طاح على الأرض
-                if (item.y > gameContainer.clientHeight - 50) {
+                // طاح على الأرض
+                if (item.y > gameContainer.clientHeight - 55) {
                     if (item.type.type !== 'bomb') {
-                        // خسران حياة إذا ضاع الدولار أو النفط
                         loseLife();
                     }
                     item.element.remove();
@@ -392,49 +382,41 @@
 
         // --- معالجة الجمع ---
         function handleCatch(item) {
-            const itemRect = item.element.getBoundingClientRect();
-            const containerRect = gameContainer.getBoundingClientRect();
-            
             if (item.type.type === 'bomb') {
-                // جمع قنبلة
-                item.element.innerText = '💥';
-                setTimeout(() => item.element.remove(), 200);
+                // تأثير انفجار
+                item.element.style.transform = 'scale(2.5)';
+                item.element.style.opacity = '0';
+                item.element.style.transition = 'all 0.3s';
+                setTimeout(() => item.element.remove(), 300);
                 loseLife();
                 showFloatingText('-1 ❤️', item.x, item.y, '#e74c3c');
             } else {
-                // جمع فلوس أو نفط
                 score += item.type.points;
                 scoreBoard.innerText = `💰 ${score}`;
                 showFloatingText(`+${item.type.points}`, item.x, item.y, '#2ecc71');
                 
-                // تأثير اختفاء
-                item.element.style.transform = 'scale(2)';
+                item.element.style.transform = 'scale(1.8) translateY(-30px)';
                 item.element.style.opacity = '0';
-                setTimeout(() => item.element.remove(), 200);
+                item.element.style.transition = 'all 0.3s';
+                setTimeout(() => item.element.remove(), 300);
 
-                // زيادة السرعة كل 100 نقطة
                 if (score % 100 === 0 && gameSpeed < 15) {
                     gameSpeed += 1;
                 }
             }
         }
 
-        // --- خسارة حياة ---
         function loseLife() {
             lives--;
             livesBoard.innerText = '❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(3 - Math.max(0, lives));
             
-            // اهتزاز الشاشة
             gameContainer.style.transform = 'translateX(10px)';
             setTimeout(() => gameContainer.style.transform = 'translateX(-10px)', 50);
             setTimeout(() => gameContainer.style.transform = 'translateX(0)', 100);
 
-            if (lives <= 0) {
-                gameOver();
-            }
+            if (lives <= 0) gameOver();
         }
 
-        // --- نص طائر ---
         function showFloatingText(text, x, y, color) {
             const el = document.createElement('div');
             el.classList.add('floating-text');
@@ -446,7 +428,6 @@
             setTimeout(() => el.remove(), 800);
         }
 
-        // --- نهاية اللعبة ---
         function gameOver() {
             isGameRunning = false;
             clearInterval(spawnInterval);
