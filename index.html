@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            width: 100vw;
             background: #111;
             overflow: hidden;
             display: flex;
@@ -24,16 +23,21 @@
             align-items: center;
         }
 
-        /* شاشة اللعبة كاملة */
+        /* تصغير حجم اللعبة وتوسيطها */
         #game-container {
             width: 100%;
+            max-width: 420px; /* العرض صغير */
             height: 100%;
+            max-height: 750px; /* الطول صغير */
             background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
             position: relative;
             overflow: hidden;
+            border: 6px solid #222;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
 
-        /* الخلفية المتحركة (خطوط سرعة) */
+        /* الخلفية المتحركة */
         .speed-lines {
             position: absolute;
             top: 0;
@@ -43,17 +47,17 @@
             background: repeating-linear-gradient(
                 0deg,
                 transparent,
-                transparent 50px,
-                rgba(255, 255, 255, 0.03) 50px,
-                rgba(255, 255, 255, 0.03) 100px
+                transparent 40px,
+                rgba(255, 255, 255, 0.05) 40px,
+                rgba(255, 255, 255, 0.05) 80px
             );
-            animation: moveLines 1s linear infinite;
+            animation: moveLines 0.8s linear infinite; /* حركة أسرع */
             z-index: 1;
         }
 
         @keyframes moveLines {
             0% { transform: translateY(0); }
-            100% { transform: translateY(100px); }
+            100% { transform: translateY(80px); }
         }
 
         /* الأرضية */
@@ -61,27 +65,27 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 80px;
+            height: 60px;
             background: #1a1a1a;
-            border-top: 6px solid #f1c40f;
+            border-top: 5px solid #f1c40f;
             z-index: 2;
-            box-shadow: 0 -10px 30px rgba(241, 196, 15, 0.2);
+            box-shadow: 0 -5px 20px rgba(241, 196, 15, 0.2);
         }
 
         /* الشخصية */
         #player {
-            width: 130px;
-            height: 160px;
-            background-image: url('character.png'); /* تأكد من اسم الصورة */
+            width: 110px;
+            height: 140px;
+            background-image: url('character.png');
             background-size: contain;
             background-position: center bottom;
             background-repeat: no-repeat;
             position: absolute;
-            bottom: 60px;
-            left: calc(50% - 65px);
+            bottom: 45px;
+            left: calc(50% - 55px);
             z-index: 10;
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8));
-            animation: idleFloat 1.5s infinite alternate ease-in-out;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.8));
+            animation: idleFloat 0.8s infinite alternate ease-in-out; /* اهتزاز أسرع */
         }
 
         @keyframes idleFloat {
@@ -92,22 +96,22 @@
         /* الأغراض المتساقطة */
         .falling-item {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             top: -100px;
             z-index: 5;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.7));
+            filter: drop-shadow(0 8px 8px rgba(0,0,0,0.7));
         }
 
-        /* واجهة المستخدم (النقاط والقلوب) */
+        /* واجهة المستخدم */
         #ui-layer {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -116,42 +120,36 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
             border-radius: 50px;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
             color: #fff;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
         }
 
-        #score-board {
-            color: #f1c40f;
-        }
-
-        #lives {
-            letter-spacing: 5px;
-            font-size: 24px;
-        }
+        #score-board { color: #f1c40f; }
+        #lives { letter-spacing: 3px; font-size: 22px; }
 
         /* النصوص الطائرة */
         .floating-text {
             position: absolute;
-            font-size: 40px;
+            font-size: 35px;
             font-weight: 900;
             z-index: 15;
             pointer-events: none;
-            animation: floatUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            animation: floatUp 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 3px 3px 0 #000;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-120px) scale(1.5); opacity: 0; }
+            100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
         }
 
         /* شاشات البداية والنهاية */
@@ -161,7 +159,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
@@ -174,22 +172,23 @@
         }
 
         .screen h1 {
-            font-size: 45px;
+            font-size: 35px;
             margin-bottom: 10px;
             color: #f1c40f;
-            text-shadow: 4px 4px 0 #e74c3c, 0 0 20px rgba(241, 196, 15, 0.5);
+            text-shadow: 3px 3px 0 #e74c3c, 0 0 15px rgba(241, 196, 15, 0.5);
         }
 
         .screen p {
-            font-size: 22px;
+            font-size: 20px;
             color: #ecf0f1;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             line-height: 1.6;
+            font-weight: bold;
         }
 
         button {
-            padding: 18px 50px;
-            font-size: 28px;
+            padding: 15px 40px;
+            font-size: 24px;
             font-family: 'Cairo', sans-serif;
             font-weight: 900;
             cursor: pointer;
@@ -197,47 +196,33 @@
             color: white;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 10px 0 #1e8449, 0 20px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 0 #1e8449, 0 15px 20px rgba(0,0,0,0.6);
             transition: all 0.1s;
         }
 
         button:active {
-            transform: translateY(10px);
+            transform: translateY(8px);
             box-shadow: 0 0 0 #1e8449, 0 5px 10px rgba(0,0,0,0.6);
         }
 
-        .hidden {
-            display: none !important;
-        }
-
-        .controls-hint {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-            font-size: 18px;
-            z-index: 3;
-            pointer-events: none;
-            font-weight: bold;
-        }
+        .hidden { display: none !important; }
 
         /* أزرار التحكم للجوال */
         .mobile-controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 15px;
             z-index: 25;
             pointer-events: none;
         }
         .mobile-controls button {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            font-size: 40px;
+            font-size: 35px;
             padding: 0;
             display: flex;
             justify-content: center;
@@ -247,11 +232,11 @@
             box-shadow: none;
             border: 2px solid rgba(255,255,255,0.5);
             color: white;
-            opacity: 0.7;
+            opacity: 0.8;
         }
         .mobile-controls button:active {
-            background: rgba(255,255,255,0.5);
-            transform: none;
+            background: rgba(255,255,255,0.6);
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -272,8 +257,6 @@
 
         <div id="player"></div>
 
-        <div class="controls-hint">حرك بإصبعك أو بالأسهم ⬅️➡️</div>
-
         <!-- أزرار للجوال -->
         <div class="mobile-controls">
             <button onclick="movePlayer(-40)">⬅️</button>
@@ -283,23 +266,23 @@
         <!-- النصوص العربية الخاصة بك -->
         <div id="start-screen" class="screen">
             <h1>بوك الثروة الوطنية 💸🛢️</h1>
-            <p>ساعد الشخصية بوك الفلوس العراق!<br>احذر من عاليه نصيف 💣!</p>
+            <p>ساعد الشخصية بوك الفلوس العراق!<br>احذر من عاليه نصيف 💣!<br><span style="color:#e74c3c; font-size:16px;">(اللعبة سريعة جداً، ركز!)</span></p>
             <button onclick="startGame()">ابدأ شغلها</button>
         </div>
 
         <div id="game-over-screen" class="screen hidden">
             <h1>خلصت مو خوش حرامي! 😂</h1>
-            <p>النقاط النهائية: <span id="final-score" style="color:#f1c40f; font-size: 40px;">0</span></p>
+            <p>النقاط النهائية: <span id="final-score" style="color:#f1c40f; font-size: 35px;">0</span></p>
             <button onclick="restartGame()">العب مرة ثانية</button>
         </div>
     </div>
 
     <script>
         // --- الإعدادات ---
-        const PLAYER_WIDTH = 130;
-        const PLAYER_HEIGHT = 160;
-        const ITEM_WIDTH = 70;
-        const ITEM_HEIGHT = 70;
+        const PLAYER_WIDTH = 110;
+        const PLAYER_HEIGHT = 140;
+        const ITEM_WIDTH = 60;
+        const ITEM_HEIGHT = 60;
 
         const player = document.getElementById('player');
         const gameContainer = document.getElementById('game-container');
@@ -315,7 +298,10 @@
         let lives = 3;
         let isGameRunning = false;
         let spawnInterval;
-        let gameSpeed = 14; // السرعة صارت عالية
+        
+        // 🔥 السرعة صارت كلش عالية هنا (22)
+        let gameSpeed = 22; 
+        
         let animationId;
         let items = [];
 
@@ -329,8 +315,8 @@
         // --- التحكم ---
         document.addEventListener('keydown', (e) => {
             if (!isGameRunning) return;
-            if (e.key === 'ArrowLeft' || e.key === 'a') movePlayer(-35);
-            if (e.key === 'ArrowRight' || e.key === 'd') movePlayer(35);
+            if (e.key === 'ArrowLeft' || e.key === 'a') movePlayer(-40);
+            if (e.key === 'ArrowRight' || e.key === 'd') movePlayer(40);
         });
 
         gameContainer.addEventListener('touchmove', (e) => {
@@ -375,7 +361,8 @@
             player.style.left = playerX + 'px';
             scoreBoard.innerText = '💰 0';
             livesBoard.innerText = '❤️❤️❤️';
-            gameSpeed = 14; // إعادة ضبط السرعة
+            
+            gameSpeed = 22; // إعادة ضبط السرعة للبداية
             items.forEach(i => i.element.remove());
             items = [];
             
@@ -384,8 +371,8 @@
             music.volume = 0.5;
             music.play().catch(e => console.log("Audio blocked"));
 
-            // الأغراض تطلع كل 500 ملي ثانية (سريع)
-            spawnInterval = setInterval(spawnItem, 500);
+            // 🔥 الأغراض تطلع كل 300 ملي ثانية (سرعة جنونية)
+            spawnInterval = setInterval(spawnItem, 300);
             gameLoop();
         }
 
@@ -441,7 +428,7 @@
                 }
 
                 // طاح على الأرض
-                if (item.y > gameContainer.clientHeight - 80) {
+                if (item.y > gameContainer.clientHeight - 60) {
                     if (item.type.type !== 'bomb') {
                         loseLife();
                     }
@@ -472,9 +459,9 @@
                 item.element.style.transition = 'all 0.3s';
                 setTimeout(() => item.element.remove(), 300);
 
-                // زيادة السرعة كل 100 نقطة
-                if (score % 100 === 0 && gameSpeed < 25) {
-                    gameSpeed += 2; 
+                // زيادة السرعة أكثر كل 100 نقطة (لحد ما توصل 40)
+                if (score % 100 === 0 && gameSpeed < 40) {
+                    gameSpeed += 3; 
                 }
             }
         }
@@ -498,7 +485,7 @@
             el.style.top = y + 'px';
             el.style.color = color;
             gameContainer.appendChild(el);
-            setTimeout(() => el.remove(), 800);
+            setTimeout(() => el.remove(), 700);
         }
 
         function gameOver() {
