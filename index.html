@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نوري المالكي</title>
+    <title>بوك الثروة الوطنية 💸🛢️</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,124 +15,154 @@
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
+            width: 100vw;
+            background: #111;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #1e130c, #9a8478);
-            overflow: hidden;
         }
 
+        /* شاشة اللعبة كاملة */
         #game-container {
             width: 100%;
-            max-width: 450px;
             height: 100%;
-            max-height: 700px;
-            background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
             position: relative;
             overflow: hidden;
-            border: 8px solid #111;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
         }
 
+        /* الخلفية المتحركة (خطوط سرعة) */
+        .speed-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 50px,
+                rgba(255, 255, 255, 0.03) 50px,
+                rgba(255, 255, 255, 0.03) 100px
+            );
+            animation: moveLines 1s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes moveLines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100px); }
+        }
+
+        /* الأرضية */
         .ground {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 60px;
-            background: #8b5a2b;
-            border-top: 5px solid #a0522d;
-            z-index: 1;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+            height: 80px;
+            background: #1a1a1a;
+            border-top: 6px solid #f1c40f;
+            z-index: 2;
+            box-shadow: 0 -10px 30px rgba(241, 196, 15, 0.2);
         }
 
-        /* الشخصية - صورة كاملة بدل الدائرة */
+        /* الشخصية */
         #player {
-            width: 100px;
-            height: 130px;
-            background-image: url('character.png');
+            width: 130px;
+            height: 160px;
+            background-image: url('character.png'); /* تأكد من اسم الصورة */
             background-size: contain;
             background-position: center bottom;
             background-repeat: no-repeat;
             position: absolute;
-            bottom: 40px;
-            left: calc(50% - 50px);
+            bottom: 60px;
+            left: calc(50% - 65px);
             z-index: 10;
-            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.7));
-            animation: bounce 0.6s infinite alternate ease-in-out;
-            /* لم نعد نستخدم border-radius لأنها صورة PNG شفافة */
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8));
+            animation: idleFloat 1.5s infinite alternate ease-in-out;
         }
 
-        @keyframes bounce {
-            from { transform: translateY(0) scale(1); }
-            to { transform: translateY(-10px) scale(1.02); }
+        @keyframes idleFloat {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-8px) scale(1.02); }
         }
 
-        /* الأغراض المتساقطة (صور) */
+        /* الأغراض المتساقطة */
         .falling-item {
             position: absolute;
-            width: 55px;
-            height: 55px;
+            width: 70px;
+            height: 70px;
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            top: -60px;
+            top: -100px;
             z-index: 5;
-            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.7));
         }
 
+        /* واجهة المستخدم (النقاط والقلوب) */
         #ui-layer {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 20;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         #score-board {
-            background: rgba(0, 0, 0, 0.7);
             color: #f1c40f;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 22px;
-            font-weight: 900;
-            border: 2px solid #f1c40f;
-            box-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
         }
 
         #lives {
-            font-size: 25px;
             letter-spacing: 5px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+            font-size: 24px;
         }
 
+        /* النصوص الطائرة */
         .floating-text {
             position: absolute;
-            color: #2ecc71;
-            font-size: 30px;
+            font-size: 40px;
             font-weight: 900;
             z-index: 15;
             pointer-events: none;
-            animation: floatUp 0.8s ease-out forwards;
-            text-shadow: 2px 2px 0 #000;
+            animation: floatUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-80px); opacity: 0; }
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-120px) scale(1.5); opacity: 0; }
         }
 
+        /* شاشات البداية والنهاية */
         .screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -144,22 +174,22 @@
         }
 
         .screen h1 {
-            font-size: 35px;
+            font-size: 45px;
             margin-bottom: 10px;
             color: #f1c40f;
-            text-shadow: 3px 3px 0 #e74c3c;
+            text-shadow: 4px 4px 0 #e74c3c, 0 0 20px rgba(241, 196, 15, 0.5);
         }
 
         .screen p {
-            font-size: 18px;
-            color: #bdc3c7;
-            margin-bottom: 30px;
+            font-size: 22px;
+            color: #ecf0f1;
+            margin-bottom: 40px;
             line-height: 1.6;
         }
 
         button {
-            padding: 15px 40px;
-            font-size: 24px;
+            padding: 18px 50px;
+            font-size: 28px;
             font-family: 'Cairo', sans-serif;
             font-weight: 900;
             cursor: pointer;
@@ -167,13 +197,13 @@
             color: white;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 8px 0 #1e8449, 0 15px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 0 #1e8449, 0 20px 30px rgba(0,0,0,0.6);
             transition: all 0.1s;
         }
 
         button:active {
-            transform: translateY(8px);
-            box-shadow: 0 0 0 #1e8449, 0 5px 10px rgba(0,0,0,0.5);
+            transform: translateY(10px);
+            box-shadow: 0 0 0 #1e8449, 0 5px 10px rgba(0,0,0,0.6);
         }
 
         .hidden {
@@ -182,13 +212,46 @@
 
         .controls-hint {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             width: 100%;
             text-align: center;
-            color: rgba(255,255,255,0.5);
-            font-size: 14px;
-            z-index: 2;
+            color: rgba(255,255,255,0.6);
+            font-size: 18px;
+            z-index: 3;
             pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* أزرار التحكم للجوال */
+        .mobile-controls {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 25;
+            pointer-events: none;
+        }
+        .mobile-controls button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 40px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto;
+            background: rgba(255,255,255,0.2);
+            box-shadow: none;
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            opacity: 0.7;
+        }
+        .mobile-controls button:active {
+            background: rgba(255,255,255,0.5);
+            transform: none;
         }
     </style>
 </head>
@@ -199,36 +262,44 @@
     </audio>
 
     <div id="game-container">
+        <div class="speed-lines"></div>
         <div class="ground"></div>
         
         <div id="ui-layer">
-            <div id="score-board">💰 0</div>
-            <div id="lives">❤️❤️❤️</div>
+            <div id="score-board" class="glass-panel">💰 0</div>
+            <div id="lives" class="glass-panel">❤️❤️❤️</div>
         </div>
 
         <div id="player"></div>
 
         <div class="controls-hint">حرك بإصبعك أو بالأسهم ⬅️➡️</div>
 
+        <!-- أزرار للجوال -->
+        <div class="mobile-controls">
+            <button onclick="movePlayer(-40)">⬅️</button>
+            <button onclick="movePlayer(40)">➡️</button>
+        </div>
+
+        <!-- النصوص العربية الخاصة بك -->
         <div id="start-screen" class="screen">
-            <h1>بوك الثروة الوطنية  💸🛢️</h1>
-            <p>ساعد الشخصية بوك الفلوس العراق!<br>احذر من عاليه نصيف  💣!</p>
+            <h1>بوك الثروة الوطنية 💸🛢️</h1>
+            <p>ساعد الشخصية بوك الفلوس العراق!<br>احذر من عاليه نصيف 💣!</p>
             <button onclick="startGame()">ابدأ شغلها</button>
         </div>
 
         <div id="game-over-screen" class="screen hidden">
             <h1>خلصت مو خوش حرامي! 😂</h1>
-            <p>النقاط النهائية: <span id="final-score" style="color:#f1c40f; font-size: 30px;">0</span></p>
+            <p>النقاط النهائية: <span id="final-score" style="color:#f1c40f; font-size: 40px;">0</span></p>
             <button onclick="restartGame()">العب مرة ثانية</button>
         </div>
     </div>
 
     <script>
         // --- الإعدادات ---
-        const PLAYER_WIDTH = 100;
-        const PLAYER_HEIGHT = 130;
-        const ITEM_WIDTH = 55;
-        const ITEM_HEIGHT = 55;
+        const PLAYER_WIDTH = 130;
+        const PLAYER_HEIGHT = 160;
+        const ITEM_WIDTH = 70;
+        const ITEM_HEIGHT = 70;
 
         const player = document.getElementById('player');
         const gameContainer = document.getElementById('game-container');
@@ -244,11 +315,11 @@
         let lives = 3;
         let isGameRunning = false;
         let spawnInterval;
-        let gameSpeed = 6;
+        let gameSpeed = 14; // السرعة صارت عالية
         let animationId;
         let items = [];
 
-        // --- أنواع الأغراض (صورك) ---
+        // --- أنواع الأغراض ---
         const itemTypes = [
             { image: 'money.png', points: 10, type: 'money' },
             { image: 'oil.png',   points: 20, type: 'oil' },
@@ -258,8 +329,8 @@
         // --- التحكم ---
         document.addEventListener('keydown', (e) => {
             if (!isGameRunning) return;
-            if (e.key === 'ArrowLeft' || e.key === 'a') movePlayer(-30);
-            if (e.key === 'ArrowRight' || e.key === 'd') movePlayer(30);
+            if (e.key === 'ArrowLeft' || e.key === 'a') movePlayer(-35);
+            if (e.key === 'ArrowRight' || e.key === 'd') movePlayer(35);
         });
 
         gameContainer.addEventListener('touchmove', (e) => {
@@ -281,6 +352,7 @@
         });
 
         function movePlayer(amount) {
+            if (!isGameRunning) return;
             playerX += amount;
             constrainPlayer();
             player.style.left = playerX + 'px';
@@ -303,7 +375,7 @@
             player.style.left = playerX + 'px';
             scoreBoard.innerText = '💰 0';
             livesBoard.innerText = '❤️❤️❤️';
-            gameSpeed = 7;
+            gameSpeed = 14; // إعادة ضبط السرعة
             items.forEach(i => i.element.remove());
             items = [];
             
@@ -312,7 +384,8 @@
             music.volume = 0.5;
             music.play().catch(e => console.log("Audio blocked"));
 
-            spawnInterval = setInterval(spawnItem, 800);
+            // الأغراض تطلع كل 500 ملي ثانية (سريع)
+            spawnInterval = setInterval(spawnItem, 500);
             gameLoop();
         }
 
@@ -320,7 +393,7 @@
             startGame();
         }
 
-        // --- إنشاء الأغراض (بالصور) ---
+        // --- إنشاء الأغراض ---
         function spawnItem() {
             if (!isGameRunning) return;
 
@@ -338,8 +411,8 @@
             items.push({
                 element: itemEl,
                 x: randomX,
-                y: -60,
-                speed: gameSpeed + Math.random() * 3,
+                y: -100,
+                speed: gameSpeed + Math.random() * 5,
                 type: randomType
             });
         }
@@ -360,7 +433,7 @@
 
                 // فحص الاصطدام
                 if (item.y + ITEM_HEIGHT > playerTop && item.y < playerBottom) {
-                    if (item.x + ITEM_WIDTH > playerX && item.x < playerX + PLAYER_WIDTH) {
+                    if (item.x + ITEM_WIDTH - 15 > playerX && item.x + 15 < playerX + PLAYER_WIDTH) {
                         handleCatch(item);
                         items.splice(i, 1);
                         continue;
@@ -368,7 +441,7 @@
                 }
 
                 // طاح على الأرض
-                if (item.y > gameContainer.clientHeight - 55) {
+                if (item.y > gameContainer.clientHeight - 80) {
                     if (item.type.type !== 'bomb') {
                         loseLife();
                     }
@@ -383,8 +456,7 @@
         // --- معالجة الجمع ---
         function handleCatch(item) {
             if (item.type.type === 'bomb') {
-                // تأثير انفجار
-                item.element.style.transform = 'scale(2.5)';
+                item.element.style.transform = 'scale(3)';
                 item.element.style.opacity = '0';
                 item.element.style.transition = 'all 0.3s';
                 setTimeout(() => item.element.remove(), 300);
@@ -395,13 +467,14 @@
                 scoreBoard.innerText = `💰 ${score}`;
                 showFloatingText(`+${item.type.points}`, item.x, item.y, '#2ecc71');
                 
-                item.element.style.transform = 'scale(1.8) translateY(-30px)';
+                item.element.style.transform = 'scale(2) translateY(-50px)';
                 item.element.style.opacity = '0';
                 item.element.style.transition = 'all 0.3s';
                 setTimeout(() => item.element.remove(), 300);
 
-                if (score % 100 === 0 && gameSpeed < 15) {
-                    gameSpeed += 1;
+                // زيادة السرعة كل 100 نقطة
+                if (score % 100 === 0 && gameSpeed < 25) {
+                    gameSpeed += 2; 
                 }
             }
         }
@@ -410,8 +483,8 @@
             lives--;
             livesBoard.innerText = '❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(3 - Math.max(0, lives));
             
-            gameContainer.style.transform = 'translateX(10px)';
-            setTimeout(() => gameContainer.style.transform = 'translateX(-10px)', 50);
+            gameContainer.style.transform = 'translateX(15px)';
+            setTimeout(() => gameContainer.style.transform = 'translateX(-15px)', 50);
             setTimeout(() => gameContainer.style.transform = 'translateX(0)', 100);
 
             if (lives <= 0) gameOver();
