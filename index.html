@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,93 +10,36 @@
 
 *{box-sizing:border-box;user-select:none;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:#10151c;color:white;font-family:Cairo,sans-serif;overflow:hidden}
-#game{
- position:relative;width:100vw;height:100dvh;overflow:hidden;
- background:linear-gradient(#182d46,#5b9bb1 60%,#d7a45a);
-}
-#sky{position:absolute;inset:0;background:linear-gradient(180deg,#102b46 0%,#367d9b 70%,#e5b56b 100%)}
+#game{position:relative;width:100vw;height:100dvh;overflow:hidden;background:linear-gradient(#102b46,#367d9b 65%,#e5b56b)}
 .sun{position:absolute;top:12%;right:12%;width:80px;height:80px;background:#ffda62;border-radius:50%;box-shadow:0 0 50px #ffcc55}
 .cloud{position:absolute;font-size:55px;animation:cloud 18s linear infinite}
 @keyframes cloud{from{transform:translateX(110vw)}to{transform:translateX(-150px)}}
-
 #city{position:absolute;bottom:105px;width:200%;height:150px;display:flex;align-items:end;gap:15px;animation:city 12s linear infinite}
-.building{width:95px;height:100px;background:#b67b43;border:4px solid #85542e;position:relative}
+.building{width:95px;height:100px;background:#b67b43;border:4px solid #85542e;position:relative;flex-shrink:0}
 .building:nth-child(2n){height:130px;background:#c99754}
 .building:after{content:"🪟 🪟";position:absolute;top:25px;left:5px;font-size:20px}
 @keyframes city{to{transform:translateX(50%)}}
-
-#road{
- position:absolute;bottom:0;height:115px;width:100%;
- background:#333;border-top:9px solid #e9c344;
-}
-#road:after{
- content:"";position:absolute;top:48px;width:200%;height:8px;
- background:repeating-linear-gradient(90deg,#fff 0 60px,transparent 60px 120px);
- animation:road 0.7s linear infinite;
-}
+#road{position:absolute;bottom:0;height:115px;width:100%;background:#333;border-top:9px solid #e9c344}
+#road:after{content:"";position:absolute;top:48px;width:200%;height:8px;background:repeating-linear-gradient(90deg,#fff 0 60px,transparent 60px 120px);animation:road .7s linear infinite}
 @keyframes road{to{transform:translateX(120px)}}
-
-#player{
- position:absolute;z-index:8;bottom:105px;left:15%;
- width:125px;height:150px;
- background:url('character.png') center bottom/contain no-repeat;
- filter:drop-shadow(0 8px 5px #0009);
-}
+#player{position:absolute;z-index:8;bottom:105px;left:15%;width:125px;height:150px;background:url('character.png') center bottom/contain no-repeat;filter:drop-shadow(0 8px 5px #0009)}
 #player.run{animation:run .2s infinite alternate}
 @keyframes run{to{transform:translateY(-7px) rotate(3deg)}}
 #player.jump{animation:jump .65s ease-out}
-@keyframes jump{
- 0%{transform:translateY(0)}
- 45%{transform:translateY(-180px)}
- 100%{transform:translateY(0)}
-}
-.obstacle{
- position:absolute;bottom:105px;width:80px;height:80px;
- background-position:center;background-repeat:no-repeat;background-size:contain;
- z-index:7;
-}
-#ui{
- position:absolute;z-index:15;top:15px;left:12px;right:12px;
- display:flex;justify-content:space-between;gap:8px;
-}
-.panel{
- background:#101a2bd9;border:2px solid #f5cf53;
- border-radius:17px;padding:7px 15px;
- font-size:18px;font-weight:900;box-shadow:0 4px 12px #0005;
-}
-#message{
- position:absolute;z-index:20;top:100px;width:100%;
- text-align:center;font-size:20px;font-weight:900;
- color:#fff;text-shadow:2px 3px 4px #000;
-}
-.screen{
- position:absolute;inset:0;z-index:30;
- background:#07111eea;display:flex;align-items:center;
- justify-content:center;flex-direction:column;text-align:center;padding:20px;
-}
+@keyframes jump{0%{transform:translateY(0)}45%{transform:translateY(-180px)}100%{transform:translateY(0)}}
+.obstacle{position:absolute;bottom:105px;width:80px;height:80px;background-position:center;background-repeat:no-repeat;background-size:contain;z-index:7}
+#ui{position:absolute;z-index:15;top:15px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
+.panel{background:#101a2bd9;border:2px solid #f5cf53;border-radius:17px;padding:7px 12px;font-size:17px;font-weight:900;box-shadow:0 4px 12px #0005}
+#message{position:absolute;z-index:20;top:100px;width:100%;text-align:center;font-size:20px;font-weight:900;color:#fff;text-shadow:2px 3px 4px #000}
+.screen{position:absolute;inset:0;z-index:30;background:#07111eee;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
 .screen h1{font-size:clamp(30px,8vw,55px);color:#ffd34d;margin:5px;text-shadow:3px 4px #a43c13}
 .screen p{font-size:18px;line-height:2;max-width:500px}
-.btn{
- border:0;border-radius:18px;background:linear-gradient(#ffdf62,#f39b16);
- padding:13px 35px;color:#442500;font-family:inherit;
- font-size:23px;font-weight:900;box-shadow:0 7px #a85c0b;
-}
+.btn{border:0;border-radius:18px;background:linear-gradient(#ffdf62,#f39b16);padding:13px 35px;color:#442500;font-family:inherit;font-size:23px;font-weight:900;box-shadow:0 7px #a85c0b}
 .btn:active{transform:translateY(5px);box-shadow:0 2px #a85c0b}
 .hidden{display:none!important}
-#controls{
- position:absolute;bottom:20px;left:0;right:0;z-index:25;
- display:flex;justify-content:center;pointer-events:none;
-}
-#jumpBtn{
- pointer-events:auto;width:100px;height:85px;border-radius:50%;
- background:#f1b52e;border:4px solid white;font-size:35px;
- box-shadow:0 5px 0 #985a08;
-}
-#toast{
- position:absolute;z-index:18;top:42%;width:100%;text-align:center;
- font-size:30px;font-weight:900;color:#ffe45d;
- text-shadow:3px 3px #000;pointer-events:none;
-}
+#controls{position:absolute;bottom:20px;left:0;right:0;z-index:25;display:flex;justify-content:center;pointer-events:none}
+#jumpBtn{pointer-events:auto;width:100px;height:85px;border-radius:50%;background:#f1b52e;border:4px solid white;font-size:35px;box-shadow:0 5px 0 #985a08}
+#toast{position:absolute;z-index:18;top:42%;width:100%;text-align:center;font-size:30px;font-weight:900;color:#ffe45d;text-shadow:3px 3px #000;pointer-events:none}
 </style>
 </head>
 <body>
@@ -105,7 +49,6 @@ body{margin:0;background:#10151c;color:white;font-family:Cairo,sans-serif;overfl
 </audio>
 
 <div id="game">
-<div id="sky"></div>
 <div class="sun"></div>
 <div class="cloud" style="top:20%;animation-delay:-5s">☁️</div>
 <div class="cloud" style="top:35%;animation-delay:-12s">☁️</div>
@@ -116,8 +59,8 @@ body{margin:0;background:#10151c;color:white;font-family:Cairo,sans-serif;overfl
 <div class="building"></div><div class="building"></div>
 <div class="building"></div><div class="building"></div>
 </div>
-<div id="road"></div>
 
+<div id="road"></div>
 <div id="player"></div>
 
 <div id="ui">
@@ -142,7 +85,7 @@ body{margin:0;background:#10151c;color:white;font-family:Cairo,sans-serif;overfl
 بس انتبه لا تتورط 😂
 </p>
 <button class="btn" onclick="startGame()">ابدأ الهروب 🚀</button>
-<p style="font-size:13px;color:#aaa">الموبايل: اضغط قفز أو المس الشاشة</p>
+<p style="font-size:13px;color:#aaa">اضغط زر القفز أو المس الشاشة للقفز</p>
 </div>
 
 <div id="over" class="screen hidden">
@@ -162,10 +105,19 @@ const distanceEl=document.getElementById('distance');
 const livesEl=document.getElementById('lives');
 const music=document.getElementById('music');
 
-let running=false,score=0,lives=3,distance=0;
-let speed=6,objects=[],spawnTimer=0,lastTime=0;
-let jumping=false,jumpTimer=0,raf;
-let messages=[
+let running=false;
+let score=0;
+let lives=3;
+let distance=0;
+let speed=6;
+let objects=[];
+let spawnTimer=0;
+let lastTime=0;
+let jumping=false;
+let jumpTimer=0;
+let raf;
+
+const messages=[
 "وين رايح يا معود؟ 😂",
 "النفط مو إلك وحدك! 🛢️",
 "شد حيلك يا بطل!",
@@ -177,17 +129,25 @@ let messages=[
 function say(text){
 const t=document.getElementById('toast');
 t.textContent=text;
-t.style.animation='none';
-void t.offsetWidth;
-t.style.animation='float .9s forwards';
+t.style.display='block';
+clearTimeout(t.timer);
+t.timer=setTimeout(()=>t.style.display='none',900);
 }
 
 function startGame(){
 cancelAnimationFrame(raf);
+
 objects.forEach(o=>o.el.remove());
 objects=[];
-score=0;lives=3;distance=0;speed=6;
-spawnTimer=0;jumping=false;jumpTimer=0;
+
+score=0;
+lives=3;
+distance=0;
+speed=6;
+spawnTimer=0;
+jumping=false;
+jumpTimer=0;
+
 player.classList.remove('jump');
 player.style.bottom='105px';
 player.classList.add('run');
@@ -195,20 +155,25 @@ player.classList.add('run');
 scoreEl.textContent='💰 0';
 distanceEl.textContent='🏃 0 متر';
 livesEl.textContent='❤️❤️❤️';
+
 document.getElementById('start').classList.add('hidden');
 document.getElementById('over').classList.add('hidden');
 
 running=true;
+
 music.volume=.5;
 music.play().catch(()=>{});
+
 lastTime=performance.now();
 raf=requestAnimationFrame(loop);
 }
 
 function jump(){
 if(!running||jumping)return;
+
 jumping=true;
 jumpTimer=0;
+
 player.classList.remove('jump');
 void player.offsetWidth;
 player.classList.add('jump');
@@ -216,34 +181,44 @@ player.classList.add('jump');
 
 document.addEventListener('keydown',e=>{
 if(e.code==='Space'||e.code==='ArrowUp'){
-e.preventDefault();jump();
+e.preventDefault();
+jump();
 }
 });
 
 game.addEventListener('touchstart',e=>{
-if(running && !e.target.closest('button')){
+if(running&&!e.target.closest('button')){
 jump();
 }
 },{passive:true});
 
 function spawn(){
-let types=[
+const types=[
 {name:'money',img:'money.png',points:10},
 {name:'oil',img:'oil.png',points:20},
 {name:'bomb',img:'bomb.png',points:0},
 {name:'bomb',img:'bomb.png',points:0}
 ];
-let type=types[Math.floor(Math.random()*types.length)];
-let el=document.createElement('div');
+
+const type=types[Math.floor(Math.random()*types.length)];
+
+const el=document.createElement('div');
 el.className='obstacle';
 el.style.backgroundImage=`url('${type.img}')`;
 el.style.left=game.clientWidth+20+'px';
+
 game.appendChild(el);
-objects.push({el,x:game.clientWidth+20,type,passed:false});
+
+objects.push({
+el:el,
+x:game.clientWidth+20,
+type:type
+});
 }
 
 function loop(now){
 if(!running)return;
+
 let dt=Math.min((now-lastTime)/16.67,2);
 lastTime=now;
 
@@ -253,16 +228,19 @@ speed=Math.min(6+distance*.018,15);
 distanceEl.textContent='🏃 '+Math.floor(distance)+' متر';
 
 spawnTimer+=dt;
+
 if(spawnTimer>Math.max(48,100-speed*3)){
 spawn();
 spawnTimer=0;
 }
 
-let p=player.getBoundingClientRect();
-let pr=game.getBoundingClientRect();
-let px=p.left-pr.left+20;
-let py=p.top-pr.top+20;
-let pw=p.width-40,ph=p.height-35;
+const p=player.getBoundingClientRect();
+const pr=game.getBoundingClientRect();
+
+const px=p.left-pr.left+20;
+const py=p.top-pr.top+20;
+const pw=p.width-40;
+const ph=p.height-35;
 
 if(jumping){
 jumpTimer+=dt;
@@ -274,11 +252,18 @@ player.classList.remove('jump');
 
 for(let i=objects.length-1;i>=0;i--){
 let o=objects[i];
+
 o.x-=speed*dt;
 o.el.style.left=o.x+'px';
 
-let ox=o.x+12,oy=game.clientHeight-105-65;
-let collision=px+pw>ox&&px<ox+55&&py+ph>oy&&py<oy+65;
+const ox=o.x+12;
+const oy=game.clientHeight-105-65;
+
+const collision=
+px+pw>ox &&
+px<ox+55 &&
+py+ph>oy &&
+py<oy+65;
 
 if(collision){
 if(o.type.name==='bomb'){
@@ -289,11 +274,15 @@ score+=o.type.points;
 scoreEl.textContent='💰 '+score;
 say(o.type.name==='oil'?'نفطناااا! 🛢️ +20':'لقط الفلوس! 💰 +10');
 }
-o.el.remove();objects.splice(i,1);continue;
+
+o.el.remove();
+objects.splice(i,1);
+continue;
 }
 
 if(o.x<-100){
-o.el.remove();objects.splice(i,1);
+o.el.remove();
+objects.splice(i,1);
 }
 }
 
@@ -307,10 +296,17 @@ raf=requestAnimationFrame(loop);
 
 function loseLife(){
 lives--;
-livesEl.textContent='❤️'.repeat(Math.max(0,lives))+'🖤'.repeat(3-Math.max(0,lives));
+
+livesEl.textContent=
+'❤️'.repeat(Math.max(0,lives))+
+'🖤'.repeat(3-Math.max(0,lives));
+
 game.style.filter='brightness(1.7)';
 setTimeout(()=>game.style.filter='',100);
-if(lives<=0)gameOver();
+
+if(lives<=0){
+gameOver();
+}
 }
 
 function gameOver(){
@@ -318,17 +314,19 @@ running=false;
 cancelAnimationFrame(raf);
 music.pause();
 player.classList.remove('run');
+
 document.getElementById('result').textContent=
 'جمعت '+score+' نقطة | قطعت '+Math.floor(distance)+' متر';
 
-let joke=score>300?'ملياردير! بس وين حصتك؟ 😂':
-score>100?'مو بطال.. عندك مستقبل اقتصادي!':
+let joke=score>300?
+'ملياردير! بس وين حصتك؟ 😂':
+score>100?
+'مو بطال.. عندك مستقبل اقتصادي!':
 'حتى الحرامي استحى منك 😂';
 
 document.getElementById('joke').textContent=joke;
 document.getElementById('over').classList.remove('hidden');
 }
 </script>
-</div>
 </body>
 </html>
