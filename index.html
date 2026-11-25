@@ -1,331 +1,701 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>بوك الثروة الوطنية 😂💰</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>مطر الثروة الوطنية 😂💸</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
 
-*{box-sizing:border-box;user-select:none;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#10151c;color:white;font-family:Cairo,sans-serif;overflow:hidden}
-#game{position:relative;width:100vw;height:100dvh;overflow:hidden;background:linear-gradient(#102b46,#367d9b 65%,#e5b56b)}
-.sun{position:absolute;top:12%;right:12%;width:80px;height:80px;background:#ffda62;border-radius:50%;box-shadow:0 0 50px #ffcc55}
-.cloud{position:absolute;font-size:55px;animation:cloud 18s linear infinite}
-@keyframes cloud{from{transform:translateX(110vw)}to{transform:translateX(-150px)}}
-#city{position:absolute;bottom:105px;width:200%;height:150px;display:flex;align-items:end;gap:15px;animation:city 12s linear infinite}
-.building{width:95px;height:100px;background:#b67b43;border:4px solid #85542e;position:relative;flex-shrink:0}
-.building:nth-child(2n){height:130px;background:#c99754}
-.building:after{content:"🪟 🪟";position:absolute;top:25px;left:5px;font-size:20px}
-@keyframes city{to{transform:translateX(50%)}}
-#road{position:absolute;bottom:0;height:115px;width:100%;background:#333;border-top:9px solid #e9c344}
-#road:after{content:"";position:absolute;top:48px;width:200%;height:8px;background:repeating-linear-gradient(90deg,#fff 0 60px,transparent 60px 120px);animation:road .7s linear infinite}
-@keyframes road{to{transform:translateX(120px)}}
-#player{position:absolute;z-index:8;bottom:105px;left:15%;width:125px;height:150px;background:url('character.png') center bottom/contain no-repeat;filter:drop-shadow(0 8px 5px #0009)}
-#player.run{animation:run .2s infinite alternate}
-@keyframes run{to{transform:translateY(-7px) rotate(3deg)}}
-#player.jump{animation:jump .65s ease-out}
-@keyframes jump{0%{transform:translateY(0)}45%{transform:translateY(-180px)}100%{transform:translateY(0)}}
-.obstacle{position:absolute;bottom:105px;width:80px;height:80px;background-position:center;background-repeat:no-repeat;background-size:contain;z-index:7}
-#ui{position:absolute;z-index:15;top:15px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
-.panel{background:#101a2bd9;border:2px solid #f5cf53;border-radius:17px;padding:7px 12px;font-size:17px;font-weight:900;box-shadow:0 4px 12px #0005}
-#message{position:absolute;z-index:20;top:100px;width:100%;text-align:center;font-size:20px;font-weight:900;color:#fff;text-shadow:2px 3px 4px #000}
-.screen{position:absolute;inset:0;z-index:30;background:#07111eee;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
-.screen h1{font-size:clamp(30px,8vw,55px);color:#ffd34d;margin:5px;text-shadow:3px 4px #a43c13}
-.screen p{font-size:18px;line-height:2;max-width:500px}
-.btn{border:0;border-radius:18px;background:linear-gradient(#ffdf62,#f39b16);padding:13px 35px;color:#442500;font-family:inherit;font-size:23px;font-weight:900;box-shadow:0 7px #a85c0b}
-.btn:active{transform:translateY(5px);box-shadow:0 2px #a85c0b}
-.hidden{display:none!important}
-#controls{position:absolute;bottom:20px;left:0;right:0;z-index:25;display:flex;justify-content:center;pointer-events:none}
-#jumpBtn{pointer-events:auto;width:100px;height:85px;border-radius:50%;background:#f1b52e;border:4px solid white;font-size:35px;box-shadow:0 5px 0 #985a08}
-#toast{position:absolute;z-index:18;top:42%;width:100%;text-align:center;font-size:30px;font-weight:900;color:#ffe45d;text-shadow:3px 3px #000;pointer-events:none}
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background: #0d131a;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  overflow: hidden;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #2b6787, #132c44 65%, #0b1623 100%);
+  touch-action: none;
+}
+
+/* تأثيرات السماء والغيوم */
+.moon {
+  position: absolute;
+  top: 8%;
+  left: 10%;
+  width: 75px;
+  height: 75px;
+  background: #ffe57f;
+  border-radius: 50%;
+  box-shadow: 0 0 45px #ffd54f88;
+  opacity: 0.9;
+}
+
+.cloud {
+  position: absolute;
+  font-size: 55px;
+  opacity: 0.6;
+  animation: floatCloud 25s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatCloud {
+  from { transform: translateX(110vw); }
+  to { transform: translateX(-160px); }
+}
+
+/* خط الأفق والأرضية */
+#skyline {
+  position: absolute;
+  bottom: 85px;
+  width: 100%;
+  height: 110px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.tower {
+  width: 65px;
+  height: 85px;
+  background: #1d3b58;
+  border-top: 4px solid #f5cf53;
+  border-radius: 6px 6px 0 0;
+}
+.tower:nth-child(even) {
+  height: 115px;
+  width: 75px;
+}
+
+#ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(#2c3540, #191f26);
+  border-top: 6px solid #f5cf53;
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* اللاعب */
+#player {
+  position: absolute;
+  z-index: 10;
+  bottom: 82px;
+  left: 50%;
+  width: 115px;
+  height: 140px;
+  transform: translateX(-50%);
+  background: url('character.png') center bottom / contain no-repeat;
+  filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.7));
+  transition: transform 0.08s ease-out;
+}
+
+#player.flip-left {
+  transform: translateX(-50%) scaleX(-1);
+}
+
+#player.flip-right {
+  transform: translateX(-50%) scaleX(1);
+}
+
+#player.hurt {
+  animation: shake 0.35s ease-in-out;
+  filter: drop-shadow(0 0 15px #ff3b3b) brightness(1.4);
+}
+
+@keyframes shake {
+  0%, 100% { margin-left: 0; }
+  25% { margin-left: -14px; }
+  75% { margin-left: 14px; }
+}
+
+/* الأجسام المتساقطة */
+.item {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 8;
+  filter: drop-shadow(0 6px 6px rgba(0,0,0,0.45));
+  will-change: transform, top;
+}
+
+/* واجهة المستخدم العلوية */
+#ui {
+  position: absolute;
+  z-index: 20;
+  top: 14px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel {
+  background: rgba(13, 23, 38, 0.88);
+  border: 2px solid #f5cf53;
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#comboBadge {
+  background: linear-gradient(45deg, #ff512f, #dd2476);
+  border-color: #fff;
+  color: #fff;
+  transform: scale(0);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#comboBadge.active {
+  transform: scale(1);
+}
+
+/* النصوص العائمة والتعليقات */
+#banner {
+  position: absolute;
+  z-index: 18;
+  top: 72px;
+  width: 100%;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 900;
+  color: #ffe066;
+  text-shadow: 2px 2px 5px #000;
+  pointer-events: none;
+}
+
+.floating-text {
+  position: absolute;
+  z-index: 22;
+  font-size: 24px;
+  font-weight: 900;
+  pointer-events: none;
+  text-shadow: 2px 2px 4px #000;
+  animation: floatUp 0.85s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(0.8); }
+  50% { transform: translateY(-35px) scale(1.15); }
+  100% { opacity: 0; transform: translateY(-65px) scale(1); }
+}
+
+/* أزرار التحكم للموبايل */
+#controls {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 25;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.ctrl-btn {
+  pointer-events: auto;
+  width: 82px;
+  height: 68px;
+  border-radius: 20px;
+  background: rgba(245, 207, 83, 0.25);
+  backdrop-filter: blur(4px);
+  border: 3px solid #f5cf53;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.ctrl-btn:active {
+  background: rgba(245, 207, 83, 0.6);
+  transform: scale(0.94);
+}
+
+/* شاشات البداية والنهاية */
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: rgba(7, 15, 27, 0.94);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 24px;
+}
+
+.screen h1 {
+  font-size: clamp(32px, 8vw, 54px);
+  color: #ffd34d;
+  margin: 0 0 10px;
+  text-shadow: 3px 4px #a43c13;
+}
+
+.screen p {
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 480px;
+  color: #e2e8f0;
+  margin: 10px 0;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0 22px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 12px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(245, 207, 83, 0.3);
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.legend-item img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffdf62, #f39b16);
+  padding: 14px 40px;
+  color: #3d2000;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 7px #a85c0b;
+  transition: transform 0.1s;
+}
+
+.btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px #a85c0b;
+}
+
+.hidden {
+  display: none !important;
+}
 </style>
 </head>
 <body>
 
+<!-- نفس ملف الصوت الأصلي -->
 <audio id="music" loop>
-<source src="dOZNqq7b2h4.m4a" type="audio/mp4">
+  <source src="dOZNqq7b2h4.m4a" type="audio/mp4">
 </audio>
 
 <div id="game">
-<div class="sun"></div>
-<div class="cloud" style="top:20%;animation-delay:-5s">☁️</div>
-<div class="cloud" style="top:35%;animation-delay:-12s">☁️</div>
+  <div class="moon"></div>
+  <div class="cloud" style="top: 15%; animation-delay: -4s;">☁️</div>
+  <div class="cloud" style="top: 30%; animation-delay: -14s;">☁️</div>
 
-<div id="city">
-<div class="building"></div><div class="building"></div>
-<div class="building"></div><div class="building"></div>
-<div class="building"></div><div class="building"></div>
-<div class="building"></div><div class="building"></div>
-</div>
+  <div id="skyline">
+    <div class="tower"></div>
+    <div class="tower"></div>
+    <div class="tower"></div>
+    <div class="tower"></div>
+    <div class="tower"></div>
+  </div>
 
-<div id="road"></div>
-<div id="player"></div>
+  <div id="ground"></div>
+  <div id="player"></div>
 
-<div id="ui">
-<div class="panel" id="score">💰 0</div>
-<div class="panel" id="distance">🏃 0 متر</div>
-<div class="panel" id="lives">❤️❤️❤️</div>
-</div>
+  <!-- شريط المعلومات -->
+  <div id="ui">
+    <div class="panel" id="score">💰 0</div>
+    <div class="panel" id="comboBadge">🔥 x2</div>
+    <div class="panel" id="lives">❤️❤️❤️</div>
+  </div>
 
-<div id="message">يلا اهرب يا بطل 😂</div>
-<div id="toast"></div>
+  <div id="banner">افتح جيبك السماء تمطر فلوس! 💸</div>
 
-<div id="controls">
-<button id="jumpBtn" onclick="jump()">⬆️ قفز</button>
-</div>
+  <!-- أزرار التحكم باللمس -->
+  <div id="controls">
+    <button class="ctrl-btn" id="btnRight">➡️</button>
+    <button class="ctrl-btn" id="btnLeft">⬅️</button>
+  </div>
 
-<div id="start" class="screen">
-<h1>بوك الثروة الوطنية 😂</h1>
-<div style="font-size:65px">🏃‍♂️💰🛢️</div>
-<p>
-مطلوب منك تهرب بالفلوس والنفط!<br>
-اجمع الثروة وتجنب القنابل والمصايب.<br>
-بس انتبه لا تتورط 😂
-</p>
-<button class="btn" onclick="startGame()">ابدأ الهروب 🚀</button>
-<p style="font-size:13px;color:#aaa">اضغط زر القفز أو المس الشاشة للقفز</p>
-</div>
+  <!-- شاشة البداية -->
+  <div id="start" class="screen">
+    <h1>مطر الثروة الوطنية 😂💸</h1>
+    <div class="legend">
+      <div class="legend-item">
+        <img src="money.png" alt="فلوس" onerror="this.outerHTML='💵'">
+        <span>+10 نقاط</span>
+      </div>
+      <div class="legend-item">
+        <img src="oil.png" alt="نفط" onerror="this.outerHTML='🛢️'">
+        <span>+25 نقطة</span>
+      </div>
+      <div class="legend-item">
+        <img src="bomb.png" alt="قنبلة" onerror="this.outerHTML='💣'">
+        <span>تنفجر بيك!</span>
+      </div>
+    </div>
+    <p>
+      الخيرات كامت توكع من السماء!<br>
+      تحرك يمين ويسار ولمّ الفلوس والنفط بس دير بالك من القنابل!
+    </p>
+    <button class="btn" onclick="startGame()">يلا نلمّ الثروة 🚀</button>
+    <p style="font-size: 13px; color: #94a3b8; margin-top: 12px;">
+      اسحب بإصبعك على الشاشة أو استخدم الأسهم / الأزرار
+    </p>
+  </div>
 
-<div id="over" class="screen hidden">
-<h1>انتهى المشوار 😂</h1>
-<div style="font-size:65px">💥🤦‍♂️</div>
-<p id="result">النقاط: 0</p>
-<p id="joke">حتى الفلوس ما لحكت تجمعها!</p>
-<button class="btn" onclick="startGame()">حاول مرة ثانية 🔥</button>
-</div>
+  <!-- شاشة الخسارة -->
+  <div id="over" class="screen hidden">
+    <h1>انفجرت الميزانية! 💥😂</h1>
+    <div style="font-size: 64px; margin: 5px 0;">🤦‍♂️💸</div>
+    <p id="result" style="font-size: 22px; font-weight: 900; color: #ffd34d;">المجموع: 0</p>
+    <p id="bestScore" style="font-size: 16px; color: #38bdf8;">أعلى رقم قياسي: 0</p>
+    <p id="joke">حتى الجيب انزرف وما لحكت تاخذ شي!</p>
+    <button class="btn" onclick="startGame()">جولة ثانية 🔥</button>
+  </div>
 </div>
 
 <script>
-const game=document.getElementById('game');
-const player=document.getElementById('player');
-const scoreEl=document.getElementById('score');
-const distanceEl=document.getElementById('distance');
-const livesEl=document.getElementById('lives');
-const music=document.getElementById('music');
+const game = document.getElementById('game');
+const player = document.getElementById('player');
+const scoreEl = document.getElementById('score');
+const livesEl = document.getElementById('lives');
+const comboBadge = document.getElementById('comboBadge');
+const bannerEl = document.getElementById('banner');
+const music = document.getElementById('music');
 
-let running=false;
-let score=0;
-let lives=3;
-let distance=0;
-let speed=6;
-let objects=[];
-let spawnTimer=0;
-let lastTime=0;
-let jumping=false;
-let jumpTimer=0;
+let running = false;
+let score = 0;
+let highScore = localStorage.getItem('wealthRainHigh') || 0;
+let lives = 3;
+let combo = 0;
+let items = [];
+let spawnTimer = 0;
+let lastTime = 0;
 let raf;
 
-const messages=[
-"وين رايح يا معود؟ 😂",
-"النفط مو إلك وحدك! 🛢️",
-"شد حيلك يا بطل!",
-"الفلوس بالطريق 💰",
-"القنبلة جاية انتبه! 💣",
-"لا توقف عمي!"
+// حركة اللاعب
+let playerX = window.innerWidth / 2;
+const playerSpeed = 11;
+const keys = { left: false, right: false };
+
+const funnyBanners = [
+  "افتح جيبك السماء تمطر فلوس! 💸",
+  "النفط نازل صبّ يا عمي! 🛢️",
+  "دير بالك من القنابل لا تطير! 💣",
+  "وين تودي هالفلوس كلها؟ 😂",
+  "عفيه بالسبع لمّهم كلهم! 💰",
+  "الوضع صار دسم كلش! 🔥"
 ];
 
-function say(text){
-const t=document.getElementById('toast');
-t.textContent=text;
-t.style.display='block';
-clearTimeout(t.timer);
-t.timer=setTimeout(()=>t.style.display='none',900);
+function showFloatingText(text, x, y, color = '#ffe45d') {
+  const el = document.createElement('div');
+  el.className = 'floating-text';
+  el.textContent = text;
+  el.style.left = Math.min(Math.max(x, 30), game.clientWidth - 90) + 'px';
+  el.style.top = y + 'px';
+  el.style.color = color;
+  game.appendChild(el);
+  setTimeout(() => el.remove(), 850);
 }
 
-function startGame(){
-cancelAnimationFrame(raf);
-
-objects.forEach(o=>o.el.remove());
-objects=[];
-
-score=0;
-lives=3;
-distance=0;
-speed=6;
-spawnTimer=0;
-jumping=false;
-jumpTimer=0;
-
-player.classList.remove('jump');
-player.style.bottom='105px';
-player.classList.add('run');
-
-scoreEl.textContent='💰 0';
-distanceEl.textContent='🏃 0 متر';
-livesEl.textContent='❤️❤️❤️';
-
-document.getElementById('start').classList.add('hidden');
-document.getElementById('over').classList.add('hidden');
-
-running=true;
-
-music.volume=.5;
-music.play().catch(()=>{});
-
-lastTime=performance.now();
-raf=requestAnimationFrame(loop);
+function updateUI() {
+  scoreEl.textContent = '💰 ' + score;
+  livesEl.textContent = '❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(3 - Math.max(0, lives));
+  
+  if (combo >= 3) {
+    const mult = combo >= 8 ? 3 : 2;
+    comboBadge.textContent = `🔥 مضاعف x${mult}`;
+    comboBadge.classList.add('active');
+  } else {
+    comboBadge.classList.remove('active');
+  }
 }
 
-function jump(){
-if(!running||jumping)return;
+function startGame() {
+  cancelAnimationFrame(raf);
+  items.forEach(item => item.el.remove());
+  items = [];
 
-jumping=true;
-jumpTimer=0;
+  score = 0;
+  lives = 3;
+  combo = 0;
+  spawnTimer = 0;
+  playerX = game.clientWidth / 2;
+  player.style.left = playerX + 'px';
+  player.classList.remove('hurt', 'flip-left', 'flip-right');
 
-player.classList.remove('jump');
-void player.offsetWidth;
-player.classList.add('jump');
+  updateUI();
+  document.getElementById('start').classList.add('hidden');
+  document.getElementById('over').classList.add('hidden');
+
+  running = true;
+  music.volume = 0.5;
+  music.play().catch(() => {});
+
+  lastTime = performance.now();
+  raf = requestAnimationFrame(loop);
 }
 
-document.addEventListener('keydown',e=>{
-if(e.code==='Space'||e.code==='ArrowUp'){
-e.preventDefault();
-jump();
-}
+// التحكم بلوحة المفاتيح
+document.addEventListener('keydown', e => {
+  if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
+  if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
 });
 
-game.addEventListener('touchstart',e=>{
-if(running&&!e.target.closest('button')){
-jump();
-}
-},{passive:true});
-
-function spawn(){
-const types=[
-{name:'money',img:'money.png',points:10},
-{name:'oil',img:'oil.png',points:20},
-{name:'bomb',img:'bomb.png',points:0},
-{name:'bomb',img:'bomb.png',points:0}
-];
-
-const type=types[Math.floor(Math.random()*types.length)];
-
-const el=document.createElement('div');
-el.className='obstacle';
-el.style.backgroundImage=`url('${type.img}')`;
-el.style.left=game.clientWidth+20+'px';
-
-game.appendChild(el);
-
-objects.push({
-el:el,
-x:game.clientWidth+20,
-type:type
+document.addEventListener('keyup', e => {
+  if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
+  if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
 });
+
+// التحكم بأزرار الشاشة
+const btnLeft = document.getElementById('btnLeft');
+const btnRight = document.getElementById('btnRight');
+
+btnLeft.addEventListener('pointerdown', e => { e.stopPropagation(); keys.left = true; });
+btnLeft.addEventListener('pointerup', () => keys.left = false);
+btnLeft.addEventListener('pointerleave', () => keys.left = false);
+
+btnRight.addEventListener('pointerdown', e => { e.stopPropagation(); keys.right = true; });
+btnRight.addEventListener('pointerup', () => keys.right = false);
+btnRight.addEventListener('pointerleave', () => keys.right = false);
+
+// التحكم بالسحب المباشر بالإصبع أو الماوس
+let isDragging = false;
+game.addEventListener('pointerdown', e => {
+  if (!running || e.target.closest('button')) return;
+  isDragging = true;
+  movePlayerTo(e.clientX);
+});
+
+game.addEventListener('pointermove', e => {
+  if (!running || !isDragging) return;
+  movePlayerTo(e.clientX);
+});
+
+window.addEventListener('pointerup', () => {
+  isDragging = false;
+});
+
+function movePlayerTo(targetX) {
+  if (targetX < playerX - 3) {
+    player.classList.add('flip-left');
+    player.classList.remove('flip-right');
+  } else if (targetX > playerX + 3) {
+    player.classList.add('flip-right');
+    player.classList.remove('flip-left');
+  }
+  const halfW = 55;
+  playerX = Math.max(halfW, Math.min(game.clientWidth - halfW, targetX));
+  player.style.left = playerX + 'px';
 }
 
-function loop(now){
-if(!running)return;
+function spawnItem() {
+  // زيادة احتمالية القنابل كلما زادت النقاط
+  const difficulty = Math.min(score / 600, 0.35);
+  const rand = Math.random();
 
-let dt=Math.min((now-lastTime)/16.67,2);
-lastTime=now;
+  let type;
+  if (rand < 0.25 + difficulty) {
+    type = { name: 'bomb', img: 'bomb.png', points: 0, rotSpeed: (Math.random() - 0.5) * 6 };
+  } else if (rand < 0.52 + difficulty * 0.5) {
+    type = { name: 'oil', img: 'oil.png', points: 25, rotSpeed: (Math.random() - 0.5) * 3 };
+  } else {
+    type = { name: 'money', img: 'money.png', points: 10, rotSpeed: (Math.random() - 0.5) * 4 };
+  }
 
-distance+=speed*.04*dt;
-speed=Math.min(6+distance*.018,15);
+  const el = document.createElement('div');
+  el.className = 'item';
+  el.style.backgroundImage = `url('${type.img}')`;
 
-distanceEl.textContent='🏃 '+Math.floor(distance)+' متر';
+  const margin = 45;
+  const x = margin + Math.random() * (game.clientWidth - margin * 2 - 70);
+  const y = -80;
 
-spawnTimer+=dt;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  game.appendChild(el);
 
-if(spawnTimer>Math.max(48,100-speed*3)){
-spawn();
-spawnTimer=0;
+  // سرعة السقوط تزداد تدريجياً
+  const baseSpeed = 4.2 + Math.min(score * 0.008, 7.5);
+  const speed = baseSpeed + Math.random() * 2.2;
+
+  items.push({
+    el,
+    x,
+    y,
+    speed,
+    angle: 0,
+    rotSpeed: type.rotSpeed,
+    type
+  });
 }
 
-const p=player.getBoundingClientRect();
-const pr=game.getBoundingClientRect();
+function loop(now) {
+  if (!running) return;
 
-const px=p.left-pr.left+20;
-const py=p.top-pr.top+20;
-const pw=p.width-40;
-const ph=p.height-35;
+  const dt = Math.min((now - lastTime) / 16.67, 2);
+  lastTime = now;
 
-if(jumping){
-jumpTimer+=dt;
-if(jumpTimer>39){
-jumping=false;
-player.classList.remove('jump');
+  // تحريك اللاعب عبر الأزرار أو الكيبورد
+  if (keys.left) movePlayerTo(playerX - playerSpeed * dt);
+  if (keys.right) movePlayerTo(playerX + playerSpeed * dt);
+
+  // توليد الأجسام المتساقطة
+  spawnTimer += dt;
+  const spawnRate = Math.max(22, 52 - score * 0.035);
+  if (spawnTimer >= spawnRate) {
+    spawnItem();
+    spawnTimer = 0;
+  }
+
+  // إحداثيات تصادم اللاعب
+  const pRect = player.getBoundingClientRect();
+  const gRect = game.getBoundingClientRect();
+  const px = pRect.left - gRect.left + 22;
+  const py = pRect.top - gRect.top + 25;
+  const pw = pRect.width - 44;
+  const ph = pRect.height - 35;
+
+  const groundY = game.clientHeight - 90;
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+    item.y += item.speed * dt;
+    item.angle += item.rotSpeed * dt;
+
+    item.el.style.top = item.y + 'px';
+    item.el.style.transform = `rotate(${item.angle}deg)`;
+
+    // فحص التصادم مع اللاعب
+    const ix = item.x + 12;
+    const iy = item.y + 12;
+    const iw = 48;
+    const ih = 48;
+
+    const hit =
+      px + pw > ix &&
+      px < ix + iw &&
+      py + ph > iy &&
+      py < iy + ih;
+
+    if (hit) {
+      if (item.type.name === 'bomb') {
+        combo = 0;
+        lives--;
+        player.classList.remove('hurt');
+        void player.offsetWidth;
+        player.classList.add('hurt');
+        showFloatingText('بوووم! 💥', item.x, item.y, '#ff4d4d');
+        updateUI();
+
+        if (lives <= 0) {
+          item.el.remove();
+          items.splice(i, 1);
+          gameOver();
+          return;
+        }
+      } else {
+        combo++;
+        const mult = combo >= 8 ? 3 : (combo >= 3 ? 2 : 1);
+        const gained = item.type.points * mult;
+        score += gained;
+
+        const label = item.type.name === 'oil'
+          ? `نفط! +${gained} 🛢️`
+          : `+${gained} 💰`;
+        showFloatingText(label, item.x, item.y, mult > 1 ? '#4ade80' : '#ffe45d');
+        updateUI();
+      }
+
+      item.el.remove();
+      items.splice(i, 1);
+      continue;
+    }
+
+    // إذا وصل للأرض
+    if (item.y > groundY - 35) {
+      // إذا فاتتك فلوس أو نفط ينكسر الكومبو فقط بدون خسارة قلب
+      if (item.type.name !== 'bomb' && combo > 0) {
+        combo = 0;
+        updateUI();
+      }
+      item.el.remove();
+      items.splice(i, 1);
+    }
+  }
+
+  // تغيير العبارة التشجيعية عشوائياً
+  if (Math.random() < 0.003 * dt) {
+    bannerEl.textContent = funnyBanners[Math.floor(Math.random() * funnyBanners.length)];
+  }
+
+  raf = requestAnimationFrame(loop);
 }
-}
 
-for(let i=objects.length-1;i>=0;i--){
-let o=objects[i];
+function gameOver() {
+  running = false;
+  cancelAnimationFrame(raf);
+  music.pause();
 
-o.x-=speed*dt;
-o.el.style.left=o.x+'px';
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('wealthRainHigh', highScore);
+  }
 
-const ox=o.x+12;
-const oy=game.clientHeight-105-65;
+  document.getElementById('result').textContent = `جمعت: ${score} نقطة 💰`;
+  document.getElementById('bestScore').textContent = `أعلى رقم قياسي: ${highScore} 🏆`;
 
-const collision=
-px+pw>ox &&
-px<ox+55 &&
-py+ph>oy &&
-py<oy+65;
+  let joke = '';
+  if (score >= 500) {
+    joke = 'ما شاء الله! صرت وزير المالية رسمياً 😂👑';
+  } else if (score >= 200) {
+    joke = 'خوش حصيلة! تكفي تشتري بيها مولدة صامتة 😂';
+  } else {
+    joke = 'القنابل أكثر من الفلوس، حظ أوفر يا بطل! 🤦‍♂️';
+  }
 
-if(collision){
-if(o.type.name==='bomb'){
-loseLife();
-say('بووووم! 😂💥');
-}else{
-score+=o.type.points;
-scoreEl.textContent='💰 '+score;
-say(o.type.name==='oil'?'نفطناااا! 🛢️ +20':'لقط الفلوس! 💰 +10');
-}
-
-o.el.remove();
-objects.splice(i,1);
-continue;
-}
-
-if(o.x<-100){
-o.el.remove();
-objects.splice(i,1);
-}
-}
-
-if(Math.random()<.002*dt){
-document.getElementById('message').textContent=
-messages[Math.floor(Math.random()*messages.length)];
-}
-
-raf=requestAnimationFrame(loop);
-}
-
-function loseLife(){
-lives--;
-
-livesEl.textContent=
-'❤️'.repeat(Math.max(0,lives))+
-'🖤'.repeat(3-Math.max(0,lives));
-
-game.style.filter='brightness(1.7)';
-setTimeout(()=>game.style.filter='',100);
-
-if(lives<=0){
-gameOver();
-}
-}
-
-function gameOver(){
-running=false;
-cancelAnimationFrame(raf);
-music.pause();
-player.classList.remove('run');
-
-document.getElementById('result').textContent=
-'جمعت '+score+' نقطة | قطعت '+Math.floor(distance)+' متر';
-
-let joke=score>300?
-'ملياردير! بس وين حصتك؟ 😂':
-score>100?
-'مو بطال.. عندك مستقبل اقتصادي!':
-'حتى الحرامي استحى منك 😂';
-
-document.getElementById('joke').textContent=joke;
-document.getElementById('over').classList.remove('hidden');
+  document.getElementById('joke').textContent = joke;
+  document.getElementById('over').classList.remove('hidden');
 }
 </script>
 </body>
